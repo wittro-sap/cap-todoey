@@ -3,6 +3,14 @@ const cds = require("@sap/cds");
 module.exports = cds.service.impl(function () {
   const { TaskLists } = this.entities;
 
+  const isDefaultTaskList = async (taskListID, req) => {
+    const query = cds.ql.SELECT.one(TaskLists)
+      .columns("isDefault")
+      .where({ ID: taskListID });
+    const taskList = await this.tx(req).run(query);
+    return taskList.isDefault;
+  };
+
   this.before(["CREATE", "UPDATE"], TaskLists, (req) => {
     const color = req.data.color;
     if (!color) {
@@ -20,14 +28,16 @@ module.exports = cds.service.impl(function () {
     if (data.title === undefined) {
       return;
     }
-
-    const query = cds.ql.SELECT.one(TaskLists)
-      .columns("isDefault")
-      .where({ ID: data.ID });
-    const taskList = await this.tx(req).run(query);
-
-    if (taskList.isDefault) {
+    const isDefault = await isDefaultTaskList(data.ID, req);
+    if (isDefault) {
       req.reject(400, "Title of default task list cannot be updated.");
+    }
+  });
+
+  this.before("DELETE", TaskLists, async (req) => {
+    const isDefault = await isDefaultTaskList(req.data.ID, req);
+    if (isDefault) {
+      req.reject(400, "Default task list cannot be deleted.");
     }
   });
 });

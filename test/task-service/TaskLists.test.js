@@ -48,15 +48,15 @@ describe("TaskLists:", () => {
       const {
         status,
         data,
-      } = await GET`/task/TaskLists/00000000-0000-0000-0000-000000000000?$select=ID&$expand=tasks`;
+      } = await GET`/task/TaskLists/b999c57b-facd-4112-921e-90a51664f29d?$select=ID&$expand=tasks`;
       expect(status).to.equal(200);
       expect(data).to.deep.include({
-        ID: "00000000-0000-0000-0000-000000000000",
+        ID: "b999c57b-facd-4112-921e-90a51664f29d",
         tasks: [
           {
             ID: "66b4f1ed-6379-412a-aefc-c0e951bc56ea",
             title: "Do laundry",
-            taskList: { ID: "00000000-0000-0000-0000-000000000000" },
+            taskList: { ID: "b999c57b-facd-4112-921e-90a51664f29d" },
             priority: null,
             dueDate: null,
             dueTime: null,
@@ -67,7 +67,7 @@ describe("TaskLists:", () => {
           {
             ID: "a74ddb9a-5bd6-481a-aba3-9737ec37ed99",
             title: "Plan vacation",
-            taskList: { ID: "00000000-0000-0000-0000-000000000000" },
+            taskList: { ID: "b999c57b-facd-4112-921e-90a51664f29d" },
             priority: null,
             dueDate: null,
             dueTime: null,
@@ -78,7 +78,7 @@ describe("TaskLists:", () => {
           {
             ID: "d3183e36-648f-433e-89d5-df89a9e37b54",
             title: "Shop groceries",
-            taskList: { ID: "00000000-0000-0000-0000-000000000000" },
+            taskList: { ID: "b999c57b-facd-4112-921e-90a51664f29d" },
             priority: null,
             dueDate: null,
             dueTime: null,
@@ -220,11 +220,29 @@ describe("TaskLists:", () => {
     });
   });
 
-  describe.skip("Deleting task lists", () => {
-    it("succeeds for empty, non-default list", async () => {});
+  describe("Deleting task lists", () => {
+    it("succeeds for empty, non-default list", async () => {
+      const {
+        status,
+      } = await DEL`/task/TaskLists/e24b505c-d5b8-4dae-b0fc-9f46e454fb9f`;
+      expect(status).to.equal(204);
+      const get = await GET`/task/TaskLists/e24b505c-d5b8-4dae-b0fc-9f46e454fb9f`;
+      expect(get.status).to.equal(404);
+    });
 
-    it("fails for default list", async () => {});
+    it("fails for default list", async () => {
+      const {
+        status,
+        data,
+      } = await DEL`/task/TaskLists/00000000-0000-0000-0000-000000000000`;
+      expect(status).to.equal(400);
+    });
 
-    it("fails when having tasks", async () => {});
+    it("fails when having tasks", async () => {
+      const {
+        status,
+      } = await DEL`/task/TaskLists/b999c57b-facd-4112-921e-90a51664f29d`;
+      expect(status).to.equal(400);
+    });
   });
 });
