@@ -32,7 +32,24 @@ describe("Tasks:", () => {
       });
     });
 
-    it("succeeds with search by title", async () => {});
+    it("succeeds with search by title", async () => {
+      const {
+        status,
+        data,
+      } = await GET`/task/Tasks?$select=title&$search=Plan`;
+      expect(status).to.equal(200);
+      expect(data.value).not.to.be.an("undefined");
+      expect(data.value).to.deep.members([
+        {
+          ID: "a74ddb9a-5bd6-481a-aba3-9737ec37ed99",
+          title: "Plan vacation",
+        },
+        {
+          ID: "f5d7d997-420d-428d-b5bf-348780f5cf08",
+          title: "Content brainstorming & Planning",
+        },
+      ]);
+    });
 
     it("succeeds with filter by task list", async () => {});
 

@@ -42,6 +42,9 @@ module.exports = cds.service.impl(function () {
   });
 
   this.after("READ", Tasks, (each) => {
+    if (each.dueDateTime !== null) {
+      return;
+    }
     const { dueDate, dueTime } = each;
     if (!dueDate) {
       return;
@@ -50,6 +53,9 @@ module.exports = cds.service.impl(function () {
   });
 
   this.after("READ", Tasks, (each) => {
+    if (each.isCompleted !== null) {
+      return;
+    }
     const openStatus = "O";
     each.isCompleted = each.status_code !== openStatus;
   });
