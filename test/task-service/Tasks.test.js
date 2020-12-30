@@ -12,8 +12,25 @@ describe("Tasks:", () => {
     axios.defaults.validateStatus = validateStatus;
   });
 
-  describe.skip("Reading tasks", () => {
-    it("succeeds by ID", async () => {});
+  describe("Reading tasks", () => {
+    it("succeeds by ID", async () => {
+      const {
+        status,
+        data,
+      } = await GET`/task/Tasks/d3183e36-648f-433e-89d5-df89a9e37b54`;
+      expect(status).to.equal(200);
+      expect(data).to.deep.include({
+        ID: "d3183e36-648f-433e-89d5-df89a9e37b54",
+        title: "Shop groceries",
+        taskList: { ID: "b999c57b-facd-4112-921e-90a51664f29d" },
+        priority: { code: 4 },
+        dueDate: "2020-12-29",
+        dueTime: "09:30:00",
+        dueDateTime: "2020-12-29T09:30:00",
+        status: { code: "O" },
+        isCompleted: false,
+      });
+    });
 
     it("succeeds with search by title", async () => {});
 

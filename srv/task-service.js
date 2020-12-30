@@ -1,7 +1,7 @@
 const cds = require("@sap/cds");
 
 module.exports = cds.service.impl(function () {
-  const { TaskLists } = this.entities;
+  const { TaskLists, Tasks } = this.entities;
 
   const isDefaultTaskList = async (taskListID, req) => {
     const query = cds.ql.SELECT.one(TaskLists)
@@ -39,5 +39,18 @@ module.exports = cds.service.impl(function () {
     if (isDefault) {
       req.reject(400, "Default task list cannot be deleted.");
     }
+  });
+
+  this.after("READ", Tasks, (each) => {
+    const { dueDate, dueTime } = each;
+    if (!dueDate) {
+      return;
+    }
+    each.dueDateTime = `${dueDate}T${dueTime || "00:00:00"}`;
+  });
+
+  this.after("READ", Tasks, (each) => {
+    const openStatus = "O";
+    each.isCompleted = each.status_code !== openStatus;
   });
 });
