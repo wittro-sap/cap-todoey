@@ -144,14 +144,80 @@ describe("TaskLists:", () => {
     });
   });
 
-  describe.skip("Updating task lists", () => {
-    it("succeeds with title and color", async () => {});
+  describe("Updating task lists", () => {
+    it("succeeds with title and color", async () => {
+      const { status, data } = await PATCH(
+        `/task/TaskLists/e24b505c-d5b8-4dae-b0fc-9f46e454fb9f`,
+        {
+          title: "Testing",
+          color: "FF0000",
+        }
+      );
+      expect(status).to.equal(200);
+      expect(data).to.deep.include({
+        title: "Testing",
+        color: "FF0000",
+        isDefault: false,
+      });
+    });
 
-    it("fails with null title", async () => {});
+    it("fails with null title", async () => {
+      const { status } = await PATCH(
+        `/task/TaskLists/e24b505c-d5b8-4dae-b0fc-9f46e454fb9f`,
+        {
+          title: null,
+        }
+      );
+      expect(status).to.equal(400);
+    });
 
-    it("fails with invalid color", async () => {});
+    it("fails with invalid color", async () => {
+      const { status } = await PATCH(
+        `/task/TaskLists/e24b505c-d5b8-4dae-b0fc-9f46e454fb9f`,
+        {
+          color: "abc",
+        }
+      );
+      expect(status).to.equal(400);
+    });
 
-    it("fails with specifying default flag", async () => {});
+    it("succeeds with ignoring default flag when specified", async () => {
+      const { status, data } = await PATCH(
+        `/task/TaskLists/e24b505c-d5b8-4dae-b0fc-9f46e454fb9f`,
+        {
+          isDefault: true,
+        }
+      );
+      expect(status).to.equal(200);
+      expect(data).to.deep.include({
+        ID: "e24b505c-d5b8-4dae-b0fc-9f46e454fb9f",
+        isDefault: false,
+      });
+    });
+
+    it("fails with title for default list", async () => {
+      const { status } = await PATCH(
+        `/task/TaskLists/00000000-0000-0000-0000-000000000000`,
+        {
+          title: "Testing",
+        }
+      );
+      expect(status).to.equal(400);
+    });
+
+    it("succeeds with color for default list", async () => {
+      const { status, data } = await PATCH(
+        `/task/TaskLists/00000000-0000-0000-0000-000000000000`,
+        {
+          color: "ff0000",
+        }
+      );
+      expect(status).to.equal(200);
+      expect(data).to.deep.include({
+        ID: "00000000-0000-0000-0000-000000000000",
+        color: "FF0000",
+      });
+    });
   });
 
   describe.skip("Deleting task lists", () => {
