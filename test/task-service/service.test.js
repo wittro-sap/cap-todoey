@@ -1,6 +1,6 @@
 const { GET, expect } = require("../app");
 
-describe("Metadata", () => {
+describe("Endpoint", () => {
   it("serves $metadata", async () => {
     const { headers, status } = await GET`/task/$metadata`;
     expect(status).to.equal(200);
@@ -10,14 +10,28 @@ describe("Metadata", () => {
     });
   });
 
-  it("service service document", async () => {
+  it("serves service document", async () => {
     const { status, data } = await GET`/task`;
     expect(status).to.equal(200);
     expect(data).to.deep.include({ "@odata.context": "$metadata" });
     expect(data.value).not.to.be.an("undefined");
-    expect(data.value).to.deep.include({
-      name: "TaskPriorityCodes",
-      url: "TaskPriorityCodes",
-    });
+    expect(data.value).to.deep.members([
+      {
+        name: "Tasks",
+        url: "Tasks",
+      },
+      {
+        name: "TaskLists",
+        url: "TaskLists",
+      },
+      {
+        name: "TaskPriorityCodes",
+        url: "TaskPriorityCodes",
+      },
+      {
+        name: "TaskStatusCodes",
+        url: "TaskStatusCodes",
+      },
+    ]);
   });
 });

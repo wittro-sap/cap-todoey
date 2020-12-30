@@ -1,6 +1,6 @@
 const { DEL, GET, PATCH, POST, axios, expect } = require("../app");
 
-describe("TaskPriorityCodes", () => {
+describe("TaskPriorityCodes:", () => {
   let validateStatus;
 
   beforeAll(() => {
@@ -12,7 +12,7 @@ describe("TaskPriorityCodes", () => {
     axios.defaults.validateStatus = validateStatus;
   });
 
-  it("gets all task priority codes", async () => {
+  it("Reading all task priority codes succeeds", async () => {
     const { status, data } = await GET`/task/TaskPriorityCodes`;
     expect(status).to.equal(200);
     expect(data.value).not.to.be.an("undefined");
@@ -24,7 +24,7 @@ describe("TaskPriorityCodes", () => {
     ]);
   });
 
-  it("gets a single task priority code", async () => {
+  it("Reading a single task priority code succeeds", async () => {
     const { status, data } = await GET`/task/TaskPriorityCodes/2`;
     expect(status).to.equal(200);
     expect(data).to.deep.include({
@@ -33,12 +33,12 @@ describe("TaskPriorityCodes", () => {
     });
   });
 
-  it("cannot get task priority with unknown code", async () => {
+  it("Reading task priority with unknown code fails", async () => {
     const { status } = await GET`/task/TaskPriorityCodes/0`;
     expect(status).to.equal(404);
   });
 
-  it("cannot create a task priority code", async () => {
+  it("Creating a task priority code fails", async () => {
     const { status } = await POST(`/task/TaskPriorityCodes`, {
       code: 0,
       name: "Unknown",
@@ -46,14 +46,14 @@ describe("TaskPriorityCodes", () => {
     expect(status).to.equal(405);
   });
 
-  it("cannot update a task priority code", async () => {
+  it("Updating a task priority code fails", async () => {
     const { status } = await PATCH(`/task/TaskPriorityCodes/2`, {
       name: "Moderate",
     });
     expect(status).to.equal(405);
   });
 
-  it("cannot delete a task priority code", async () => {
+  it("Deleting a task priority code fails", async () => {
     const { status } = await DEL`/task/TaskPriorityCodes/1`;
     expect(status).to.equal(405);
   });
