@@ -91,16 +91,57 @@ describe("TaskLists:", () => {
     });
   });
 
-  describe.skip("Creating task lists", () => {
-    it("succeeds with title and color", async () => {});
+  describe("Creating task lists", () => {
+    it("succeeds with title and color", async () => {
+      const { status, data } = await POST(`/task/TaskLists`, {
+        title: "Testing",
+        color: "f58a0e",
+      });
+      expect(status).to.equal(201);
+      expect(data).to.deep.include({
+        title: "Testing",
+        color: "F58A0E",
+        isDefault: false,
+      });
+    });
 
-    it("fails without title", async () => {});
+    it("fails without title", async () => {
+      const { status } = await POST(`/task/TaskLists`, { title: null });
+      expect(status).to.equal(400);
+    });
 
-    it("succeeds without color", async () => {});
+    it("succeeds without color", async () => {
+      const { status, data } = await POST(`/task/TaskLists`, {
+        title: "Testing",
+      });
+      expect(status).to.equal(201);
+      expect(data).to.deep.include({
+        title: "Testing",
+        color: null,
+        isDefault: false,
+      });
+    });
 
-    it("fails with invalid color", async () => {});
+    it("fails with invalid color", async () => {
+      const { status } = await POST(`/task/TaskLists`, {
+        title: "Testing",
+        color: "ABCXYZ",
+      });
+      expect(status).to.equal(400);
+    });
 
-    it("fails with specifying default flag", async () => {});
+    it("succeeds with ignoring default flag when specified", async () => {
+      const { status, data } = await POST(`/task/TaskLists`, {
+        title: "Testing",
+        isDefault: true,
+      });
+      expect(status).to.equal(201);
+      expect(data).to.deep.include({
+        title: "Testing",
+        color: null,
+        isDefault: false,
+      });
+    });
   });
 
   describe.skip("Updating task lists", () => {
