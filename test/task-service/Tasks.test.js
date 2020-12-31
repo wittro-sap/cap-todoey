@@ -1,3 +1,4 @@
+const { to } = require("@sap/cds/lib/compile");
 const { DEL, GET, PATCH, POST, axios, expect } = require("../app");
 
 describe("Tasks:", () => {
@@ -65,7 +66,18 @@ describe("Tasks:", () => {
       ]);
     });
 
-    it("succeeds with filter by priorities", async () => {});
+    it("succeeds with filter by priorities", async () => {
+      const {
+        status,
+        data,
+      } = await GET`/task/Tasks?$select=ID&$filter=priority/code eq 1 or priority/code eq 2`;
+      expect(status).to.equal(200);
+      expect(data.value).not.to.be.an("undefined");
+      expect(data.value).to.deep.members([
+        { ID: "a74ddb9a-5bd6-481a-aba3-9737ec37ed99" },
+        { ID: "f5d7d997-420d-428d-b5bf-348780f5cf08" },
+      ]);
+    });
 
     it("succeeds with filter by date range", async () => {});
 
