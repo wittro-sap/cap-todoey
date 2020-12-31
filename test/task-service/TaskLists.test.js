@@ -57,10 +57,9 @@ describe("TaskLists:", () => {
             ID: "66b4f1ed-6379-412a-aefc-c0e951bc56ea",
             title: "Do laundry",
             taskList: { ID: "b999c57b-facd-4112-921e-90a51664f29d" },
-            priority: null,
+            priority: { code: 4 },
             dueDate: null,
             dueTime: null,
-            dueDateTime: null,
             status: { code: "C" },
             isCompleted: null,
           },
@@ -68,10 +67,9 @@ describe("TaskLists:", () => {
             ID: "a74ddb9a-5bd6-481a-aba3-9737ec37ed99",
             title: "Plan vacation",
             taskList: { ID: "b999c57b-facd-4112-921e-90a51664f29d" },
-            priority: null,
+            priority: { code: 1 },
             dueDate: null,
             dueTime: null,
-            dueDateTime: null,
             status: { code: "X" },
             isCompleted: null,
           },
@@ -79,10 +77,9 @@ describe("TaskLists:", () => {
             ID: "d3183e36-648f-433e-89d5-df89a9e37b54",
             title: "Shop groceries",
             taskList: { ID: "b999c57b-facd-4112-921e-90a51664f29d" },
-            priority: null,
-            dueDate: null,
-            dueTime: null,
-            dueDateTime: null,
+            priority: { code: 4 },
+            dueDate: "2020-12-29",
+            dueTime: "09:30:00",
             status: { code: "O" },
             isCompleted: null,
           },
@@ -224,9 +221,9 @@ describe("TaskLists:", () => {
     it("succeeds for empty, non-default list", async () => {
       const {
         status,
-      } = await DEL`/task/TaskLists/e24b505c-d5b8-4dae-b0fc-9f46e454fb9f`;
+      } = await DEL`/task/TaskLists/da1d7e71-3c9e-4609-80f4-c579bcbf6670`;
       expect(status).to.equal(204);
-      const get = await GET`/task/TaskLists/e24b505c-d5b8-4dae-b0fc-9f46e454fb9f`;
+      const get = await GET`/task/TaskLists/da1d7e71-3c9e-4609-80f4-c579bcbf6670`;
       expect(get.status).to.equal(404);
     });
 

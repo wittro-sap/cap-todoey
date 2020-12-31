@@ -1,4 +1,3 @@
-const { to } = require("@sap/cds/lib/compile");
 const { DEL, GET, PATCH, POST, axios, expect } = require("../app");
 
 describe("Tasks:", () => {
@@ -27,7 +26,6 @@ describe("Tasks:", () => {
         priority: { code: 4 },
         dueDate: "2020-12-29",
         dueTime: "09:30:00",
-        dueDateTime: "2020-12-29T09:30:00",
         status: { code: "O" },
         isCompleted: false,
       });

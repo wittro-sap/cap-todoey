@@ -20,8 +20,6 @@ entity Tasks : cuid {
   dueDate             : Date;
   @title : '{i18n>TaskDueTime}'
   dueTime             : Time;
-  @title : '{i18n>TaskDueDateTime}'
-  virtual dueDateTime : DateTime;
   @title : '{i18n>TaskStatus}'
   @readonly
   status              : TaskStatusCode default 'O';

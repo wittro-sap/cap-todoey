@@ -42,17 +42,6 @@ module.exports = cds.service.impl(function () {
   });
 
   this.after("READ", Tasks, (each) => {
-    if (each.dueDateTime !== null) {
-      return;
-    }
-    const { dueDate, dueTime } = each;
-    if (!dueDate) {
-      return;
-    }
-    each.dueDateTime = `${dueDate}T${dueTime || "00:00:00"}`;
-  });
-
-  this.after("READ", Tasks, (each) => {
     if (each.isCompleted !== null) {
       return;
     }
