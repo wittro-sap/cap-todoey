@@ -1,7 +1,4 @@
 const cds = require("@sap/cds");
-const cxn = require("../util/cxn");
-
-const taskStatusOpen = "O";
 
 module.exports = cds.service.impl(function () {
   const { TaskLists, Tasks } = this.entities;
@@ -13,27 +10,6 @@ module.exports = cds.service.impl(function () {
     const taskList = await this.tx(req).run(query);
     return taskList.isDefault;
   };
-
-  this.before("READ", Tasks, (req) => {
-    const where = req.query.SELECT.where || [];
-    for (let i = 0; i < where.length; i++) {
-      if (cxn.getRefName(where[i]) === "isCompleted") {
-        where[i] = cxn.getRef("status_code");
-        if (where[i + 1] === "=" || where[i + 1] === "!=") {
-          const isCompleted = where[i + 2].val;
-          where[i + 1] =
-            where[i + 1] === "!="
-              ? isCompleted
-                ? "="
-                : "!="
-              : isCompleted
-              ? "!="
-              : "=";
-          where[i + 2] = cxn.getVal(taskStatusOpen);
-        }
-      }
-    }
-  });
 
   this.before(["CREATE", "UPDATE"], TaskLists, (req) => {
     const color = req.data.color;
@@ -69,6 +45,7 @@ module.exports = cds.service.impl(function () {
     if (each.isCompleted !== null) {
       return;
     }
+    const taskStatusOpen = "O";
     each.isCompleted = each.status_code !== taskStatusOpen;
   });
 });

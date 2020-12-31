@@ -10,19 +10,20 @@ using {db.TaskStatusCode} from './TaskStatusCodes';
 entity Tasks : cuid {
   @title : '{i18n>TaskTitle}'
   @mandatory
-  title               : String(80);
+  title       : String(80);
   @title : '{i18n>TaskTaskList}'
   @mandatory
-  taskList            : Association to TaskLists;
+  taskList    : Association to TaskLists;
   @title : '{i18n>TaskPriority}'
-  priority            : TaskPriorityCode;
+  priority    : TaskPriorityCode;
   @title : '{i18n>TaskDueDate}'
-  dueDate             : Date;
+  dueDate     : Date;
   @title : '{i18n>TaskDueTime}'
-  dueTime             : Time;
+  dueTime     : Time;
   @title : '{i18n>TaskStatus}'
   @readonly
-  status              : TaskStatusCode default 'O';
+  status      : TaskStatusCode default 'O';
   @title : '{i18n>TaskIsCompleted}'
-  virtual isCompleted : Boolean;
+  @readonly
+  isCompleted : Boolean;
 }
