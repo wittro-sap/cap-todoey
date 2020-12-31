@@ -51,7 +51,19 @@ describe("Tasks:", () => {
       ]);
     });
 
-    it("succeeds with filter by task list", async () => {});
+    it("succeeds with filter by task list", async () => {
+      const {
+        status,
+        data,
+      } = await GET`/task/Tasks?$select=ID&$filter=taskList/ID eq b999c57b-facd-4112-921e-90a51664f29d`;
+      expect(status).to.equal(200);
+      expect(data.value).not.to.be.an("undefined");
+      expect(data.value).to.deep.members([
+        { ID: "d3183e36-648f-433e-89d5-df89a9e37b54" },
+        { ID: "a74ddb9a-5bd6-481a-aba3-9737ec37ed99" },
+        { ID: "66b4f1ed-6379-412a-aefc-c0e951bc56ea" },
+      ]);
+    });
 
     it("succeeds with filter by priorities", async () => {});
 
