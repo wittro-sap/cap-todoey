@@ -204,7 +204,40 @@ describe("Tasks:", () => {
     });
   });
 
-  describe.skip("Updating tasks", () => {});
+  describe("Updating tasks", () => {
+    it("succeeds with title and priority", async () => {
+      const { status, data } = await PATCH(
+        `/task/Tasks/ae7e6477-b195-436a-b1c4-96b3d03053f0`,
+        {
+          title: "Testing",
+          priority: { code: 2 },
+        }
+      );
+      expect(status).to.equal(200);
+      expect(data).to.deep.include({
+        ID: "ae7e6477-b195-436a-b1c4-96b3d03053f0",
+        title: "Testing",
+        taskList: { ID: "e24b505c-d5b8-4dae-b0fc-9f46e454fb9f" },
+        priority: { code: 2 },
+        dueDate: "2021-01-02",
+        dueTime: "17:00:00",
+        status: { code: "O" },
+        isCompleted: false,
+      });
+    });
+
+    it("fails without title", async () => {});
+
+    it("fails without task list", async () => {});
+
+    it("succeeds without priority", async () => {});
+
+    it("fails with due time but without date", async () => {});
+
+    it("succeeds with ignoring status when specified", async () => {});
+
+    it("fails updating completed task", async () => {});
+  });
 
   describe.skip("Deleting tasks", () => {});
 
