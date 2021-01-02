@@ -83,23 +83,6 @@ describe("Tasks:", () => {
 
     it("succeeds with filter by date range", async () => {});
 
-    it("succeeds with filtering completion flag", async () => {
-      const {
-        status,
-        data,
-      } = await GET`/task/Tasks?$select=ID&$filter=isCompleted ne true`;
-      expect(status).to.equal(200);
-      expect(data.value).not.to.be.an("undefined");
-      expect(data.value).to.deep.members([
-        { ID: "d3183e36-648f-433e-89d5-df89a9e37b54" },
-        { ID: "f5d7d997-420d-428d-b5bf-348780f5cf08" },
-      ]);
-      expect(data.value).not.to.deep.members([
-        { ID: "a74ddb9a-5bd6-481a-aba3-9737ec37ed99" },
-        { ID: "66b4f1ed-6379-412a-aefc-c0e951bc56ea" },
-      ]);
-    });
-
     it("succeeds with ordering by date descending", async () => {});
   });
 
@@ -226,11 +209,43 @@ describe("Tasks:", () => {
       });
     });
 
-    it("fails without title", async () => {});
+    it("fails without title", async () => {
+      const { status } = await PATCH(
+        `/task/Tasks/ae7e6477-b195-436a-b1c4-96b3d03053f0`,
+        {
+          title: null,
+        }
+      );
+      expect(status).to.equal(400);
+    });
 
-    it("fails without task list", async () => {});
+    it("fails without task list", async () => {
+      const { status } = await PATCH(
+        `/task/Tasks/ae7e6477-b195-436a-b1c4-96b3d03053f0`,
+        {
+          taskList: null,
+        }
+      );
+      expect(status).to.equal(400);
+    });
 
-    it("succeeds without priority", async () => {});
+    it("succeeds without priority", async () => {
+      const { status, data } = await PATCH(
+        `/task/Tasks/5b0384ec-1621-40cd-ad9e-5baff7fa0aca`,
+        {
+          priority: null,
+        }
+      );
+      expect(status).to.equal(200);
+      expect(data).to.deep.include({
+        ID: "5b0384ec-1621-40cd-ad9e-5baff7fa0aca",
+        title: "Setup media",
+        taskList: { ID: "e24b505c-d5b8-4dae-b0fc-9f46e454fb9f" },
+        priority: null,
+        status: { code: "O" },
+        isCompleted: false,
+      });
+    });
 
     it("fails with due time but without date", async () => {});
 
