@@ -81,9 +81,22 @@ describe("Tasks:", () => {
       ]);
     });
 
-    it("succeeds with filter by date range", async () => {});
+    it("succeeds with filter by date range", async () => {
+      const {
+        status,
+        data,
+      } = await GET`/task/Tasks?$select=ID&$filter=dueDate ge 2021-01-01 and dueDate le 2021-01-14`;
+      expect(status).to.equal(200);
+      expect(data.value).not.to.be.an("undefined");
+      expect(data.value.length).to.equal(3);
+      expect(data.value).to.deep.members([
+        { ID: "ae7e6477-b195-436a-b1c4-96b3d03053f0" },
+        { ID: "5b0384ec-1621-40cd-ad9e-5baff7fa0aca" },
+        { ID: "89e257d8-f909-4d03-9a5f-21271e4a5027" },
+      ]);
+    });
 
-    it("succeeds with ordering by date descending", async () => {});
+    it.skip("succeeds with ordering by date descending", async () => {});
   });
 
   describe("Creating tasks", () => {
@@ -297,7 +310,16 @@ describe("Tasks:", () => {
     });
   });
 
-  describe.skip("Deleting tasks", () => {});
+  describe("Deleting tasks", () => {
+    it("succeeds for cancelled tasks", async () => {
+      const {
+        status,
+      } = await DEL`/task/Tasks/98e69d3b-0bca-4784-8bd8-b5230add74ec`;
+      expect(status).to.equal(204);
+      const get = await GET`/task/Tasks/98e69d3b-0bca-4784-8bd8-b5230add74ec`;
+      expect(get.status).to.equal(404);
+    });
+  });
 
   describe.skip("Setting task status", () => {});
 });
