@@ -272,9 +272,29 @@ describe("Tasks:", () => {
       expect(status).to.equal(400);
     });
 
-    it("succeeds with ignoring status when specified", async () => {});
+    it("succeeds with ignoring status when specified", async () => {
+      const { status, data } = await PATCH(
+        `/task/Tasks/89e257d8-f909-4d03-9a5f-21271e4a5027`,
+        {
+          status: { code: "X" },
+        }
+      );
+      expect(status).to.equal(200);
+      expect(data).to.deep.include({
+        ID: "89e257d8-f909-4d03-9a5f-21271e4a5027",
+        status: { code: "O" },
+      });
+    });
 
-    it("fails updating completed task", async () => {});
+    it("fails updating completed task", async () => {
+      const { status } = await PATCH(
+        `/task/Tasks/e4e2ed88-1b80-44b6-ad79-12cf87295fb6`,
+        {
+          title: "Testing",
+        }
+      );
+      expect(status).to.equal(400);
+    });
   });
 
   describe.skip("Deleting tasks", () => {});

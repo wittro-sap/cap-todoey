@@ -58,7 +58,18 @@ module.exports = cds.service.impl(function () {
     data.isCompleted = false;
   });
 
-  this.before("UPDATE", Tasks, (req) => {
+  this.before("UPDATE", Tasks, async (req) => {
+    const query = cds.ql.SELECT.one(Tasks)
+      .columns("isCompleted")
+      .where({ ID: req.data.ID });
+    const task = await this.tx(req).run(query);
+
+    if (task.isCompleted) {
+      req.reject(400, "Updating completed tasks not allowed");
+    }
+  });
+
+  this.before("UPDATE", Tasks, async (req) => {
     const { ID, dueDate, dueTime } = req.data;
     if (dueDate === null) {
       req.data.dueTime = null;
@@ -69,7 +80,7 @@ module.exports = cds.service.impl(function () {
     }
 
     const query = cds.ql.SELECT.one(Tasks).columns("dueDate").where({ ID });
-    const task = this.tx(req).run(query);
+    const task = await this.tx(req).run(query);
     if (!task.dueDate) {
       req.reject(400, "Due date is mandatory if due time is defined.");
     }
