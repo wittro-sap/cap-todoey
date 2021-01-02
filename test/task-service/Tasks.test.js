@@ -247,7 +247,30 @@ describe("Tasks:", () => {
       });
     });
 
-    it("fails with due time but without date", async () => {});
+    it("succeeds by nulling due time when due date is nulled", async () => {
+      const { status, data } = await PATCH(
+        `/task/Tasks/89e257d8-f909-4d03-9a5f-21271e4a5027`,
+        {
+          dueDate: null,
+        }
+      );
+      expect(status).to.equal(200);
+      expect(data).to.deep.include({
+        ID: "89e257d8-f909-4d03-9a5f-21271e4a5027",
+        dueDate: null,
+        dueTime: null,
+      });
+    });
+
+    it("fails with due time but no date", async () => {
+      const { status } = await PATCH(
+        `/task/Tasks/f5d7d997-420d-428d-b5bf-348780f5cf08`,
+        {
+          dueTime: "18:45:00",
+        }
+      );
+      expect(status).to.equal(400);
+    });
 
     it("succeeds with ignoring status when specified", async () => {});
 

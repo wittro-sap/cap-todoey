@@ -57,4 +57,21 @@ module.exports = cds.service.impl(function () {
     data.status_code = taskStatus.open;
     data.isCompleted = false;
   });
+
+  this.before("UPDATE", Tasks, (req) => {
+    const { ID, dueDate, dueTime } = req.data;
+    if (dueDate === null) {
+      req.data.dueTime = null;
+      return;
+    }
+    if (dueDate || !dueTime) {
+      return;
+    }
+
+    const query = cds.ql.SELECT.one(Tasks).columns("dueDate").where({ ID });
+    const task = this.tx(req).run(query);
+    if (!task.dueDate) {
+      req.reject(400, "Due date is mandatory if due time is defined.");
+    }
+  });
 });
