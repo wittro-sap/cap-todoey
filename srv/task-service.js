@@ -46,6 +46,13 @@ module.exports = cds.service.impl(function () {
   });
 
   this.before("CREATE", Tasks, (req) => {
+    const { dueDate, dueTime } = req.data;
+    if (!dueDate && dueTime) {
+      req.reject(400, "Due date is mandatory if due time is defined.");
+    }
+  });
+
+  this.before("CREATE", Tasks, (req) => {
     const data = req.data;
     data.status_code = taskStatus.open;
     data.isCompleted = false;

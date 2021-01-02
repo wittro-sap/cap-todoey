@@ -136,13 +136,72 @@ describe("Tasks:", () => {
       expect(status).to.equal(400);
     });
 
-    it("succeeds with due date and time", async () => {});
+    it("succeeds with due date and time", async () => {
+      const { status, data } = await POST(`/task/Tasks`, {
+        title: "Testing",
+        taskList: { ID: "00000000-0000-0000-0000-000000000000" },
+        dueDate: "2021-01-02",
+        dueTime: "21:00:00",
+      });
+      expect(status).to.equal(201);
+      expect(data).to.deep.include({
+        title: "Testing",
+        taskList: { ID: "00000000-0000-0000-0000-000000000000" },
+        priority: null,
+        dueDate: "2021-01-02",
+        dueTime: "21:00:00",
+        status: { code: "O" },
+        isCompleted: false,
+      });
+    });
 
-    it("succeeds with due date and no time", async () => {});
+    it("succeeds with due date and no time", async () => {
+      const { status, data } = await POST(`/task/Tasks`, {
+        title: "Testing",
+        taskList: { ID: "00000000-0000-0000-0000-000000000000" },
+        dueDate: "2021-01-02",
+        dueTime: null,
+      });
+      expect(status).to.equal(201);
+      expect(data).to.deep.include({
+        title: "Testing",
+        taskList: { ID: "00000000-0000-0000-0000-000000000000" },
+        priority: null,
+        dueDate: "2021-01-02",
+        dueTime: null,
+        status: { code: "O" },
+        isCompleted: false,
+      });
+    });
 
-    it("fails with due time but no date", async () => {});
+    it("fails with due time but no date", async () => {
+      const { status, data } = await POST(`/task/Tasks`, {
+        title: "Testing",
+        taskList: { ID: "00000000-0000-0000-0000-000000000000" },
+        dueDate: null,
+        dueTime: "21:00:00",
+      });
+      expect(status).to.equal(400);
+    });
 
-    it("succeeds with ignoring status when specified", async () => {});
+    it("succeeds with ignoring status when specified", async () => {
+      const { status, data } = await POST(`/task/Tasks`, {
+        title: "Testing",
+        taskList: { ID: "00000000-0000-0000-0000-000000000000" },
+        status: { code: "C" },
+        isCompleted: true,
+      });
+      expect(status).to.equal(201);
+      expect(data).to.deep.include({
+        title: "Testing",
+        taskList: { ID: "00000000-0000-0000-0000-000000000000" },
+        priority: null,
+        dueDate: null,
+        dueTime: null,
+        status: { code: "O" },
+        isCompleted: false,
+      });
+    });
   });
 
   describe.skip("Updating tasks", () => {});
