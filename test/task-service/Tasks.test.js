@@ -103,8 +103,24 @@ describe("Tasks:", () => {
     it("succeeds with ordering by date descending", async () => {});
   });
 
-  describe.skip("Creating tasks", () => {
-    it("succeeds with title, task list, priority", async () => {});
+  describe("Creating tasks", () => {
+    it("succeeds with title, task list, priority", async () => {
+      const { status, data } = await POST(`/task/Tasks`, {
+        title: "Testing",
+        taskList: { ID: "00000000-0000-0000-0000-000000000000" },
+        priority: { code: 2 },
+      });
+      expect(status).to.equal(201);
+      expect(data).to.deep.include({
+        title: "Testing",
+        taskList: { ID: "00000000-0000-0000-0000-000000000000" },
+        priority: { code: 2 },
+        dueDate: null,
+        dueTime: null,
+        status: { code: "O" },
+        isCompleted: false,
+      });
+    });
 
     it("fails without task list", async () => {});
 

@@ -11,6 +11,10 @@ module.exports = cds.service.impl(function () {
     return taskList.isDefault;
   };
 
+  const taskStatus = {
+    open: "O",
+  };
+
   this.before(["CREATE", "UPDATE"], TaskLists, (req) => {
     const color = req.data.color;
     if (!color) {
@@ -41,11 +45,9 @@ module.exports = cds.service.impl(function () {
     }
   });
 
-  this.after("READ", Tasks, (each) => {
-    if (each.isCompleted !== null) {
-      return;
-    }
-    const taskStatusOpen = "O";
-    each.isCompleted = each.status_code !== taskStatusOpen;
+  this.before("CREATE", Tasks, (req) => {
+    const data = req.data;
+    data.status_code = taskStatus.open;
+    data.isCompleted = false;
   });
 });

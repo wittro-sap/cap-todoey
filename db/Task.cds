@@ -22,8 +22,8 @@ entity Tasks : cuid {
   dueTime     : Time;
   @title : '{i18n>TaskStatus}'
   @readonly
-  status      : TaskStatusCode default 'O';
+  status      : TaskStatusCode not null;
   @title : '{i18n>TaskIsCompleted}'
   @readonly
-  isCompleted : Boolean;
+  isCompleted : Boolean not null;
 }
