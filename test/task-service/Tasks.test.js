@@ -122,11 +122,23 @@ describe("Tasks:", () => {
       });
     });
 
-    it("fails without task list", async () => {});
+    it("fails without task list", async () => {
+      const { status } = await POST(`/task/Tasks`, { title: "Testing" });
+      expect(status).to.equal(400);
+    });
 
-    it("fails with invalid priority", async () => {});
+    it("fails with invalid priority", async () => {
+      const { status } = await POST(`/task/Tasks`, {
+        title: "Testing",
+        taskList: { ID: "00000000-0000-0000-0000-000000000000" },
+        priority: { code: 0 },
+      });
+      expect(status).to.equal(400);
+    });
 
     it("succeeds with due date and time", async () => {});
+
+    it("succeeds with due date and no time", async () => {});
 
     it("fails with due time but no date", async () => {});
 
