@@ -86,6 +86,18 @@ describe("TaskLists:", () => {
         ],
       });
     });
+
+    it.skip("succeeds finding the default task list", async () => {
+      // Fails at the moment, open CAP issue
+      const { status, data } = await GET`/task/getDefaultTaskList()`;
+      expect(status).to.equal(200);
+      expect(data).to.deep.include({
+        ID: "00000000-0000-0000-0000-000000000000",
+        title: "My Tasks",
+        color: "0000FF",
+        isDefault: true,
+      });
+    });
   });
 
   describe("Creating task lists", () => {

@@ -85,4 +85,8 @@ module.exports = cds.service.impl(function () {
       req.reject(400, "Due date is mandatory if due time is defined.");
     }
   });
+
+  this.on("getDefaultTaskList", (_req) => {
+    return cds.ql.SELECT.one(TaskLists).where({ isDefault: true });
+  });
 });

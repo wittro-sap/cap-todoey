@@ -22,4 +22,6 @@ service TaskService {
     descr
   };
 
+  function getDefaultTaskList() returns TaskLists
+
 }

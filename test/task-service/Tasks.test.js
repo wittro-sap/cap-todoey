@@ -321,5 +321,11 @@ describe("Tasks:", () => {
     });
   });
 
-  describe.skip("Setting task status", () => {});
+  describe.skip("Setting task status", () => {
+    it("succeeds to done for open task", async () => {});
+
+    it("succeeds to cancelled for open task", async () => {});
+
+    it("succeeds to reopen for cancelled task", async () => {});
+  });
 });
