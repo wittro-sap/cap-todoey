@@ -2,7 +2,7 @@
   "name": "cap-todoey",
   "version": "1.0.0",
   "description": "A simple CAP project.",
-  "repository": "<Add your repository here>",
+  "repository": "https://github.com/wittro-sap/cap-todoey",
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
