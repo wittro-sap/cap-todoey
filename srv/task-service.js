@@ -2,6 +2,7 @@ const cds = require("@sap/cds");
 
 module.exports = cds.service.impl(function () {
   const { TaskLists, Tasks } = this.entities;
+  const op = this.operations();
 
   const isDefaultTaskList = async (taskListID, req) => {
     const query = cds.ql.SELECT.one(TaskLists)
@@ -11,9 +12,9 @@ module.exports = cds.service.impl(function () {
     return taskList.isDefault;
   };
 
-  const taskStatus = {
-    open: "O",
-  };
+  const taskStatusOpen = "O";
+
+  const isCompleted = (status) => status !== taskStatusOpen;
 
   this.before(["CREATE", "UPDATE"], TaskLists, (req) => {
     const color = req.data.color;
@@ -54,18 +55,14 @@ module.exports = cds.service.impl(function () {
 
   this.before("CREATE", Tasks, (req) => {
     const data = req.data;
-    data.status_code = taskStatus.open;
-    data.isCompleted = false;
+    data.status_code = taskStatusOpen;
+    data.isCompleted = isCompleted(taskStatusOpen);
   });
 
   this.before("UPDATE", Tasks, async (req) => {
-    const query = cds.ql.SELECT.one(Tasks)
-      .columns("isCompleted")
-      .where({ ID: req.data.ID });
-    const task = await this.tx(req).run(query);
-
-    if (task.isCompleted) {
-      req.reject(400, "Updating completed tasks not allowed");
+    const status = req.data.status_code;
+    if (status) {
+      req.data.isCompleted = isCompleted(status);
     }
   });
 

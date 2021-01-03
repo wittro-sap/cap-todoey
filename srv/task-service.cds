@@ -4,12 +4,7 @@ using {db} from '../db';
 
 service TaskService {
 
-  entity Tasks             as projection on db.Tasks actions {
-    action setToDone();
-    action setToObsolete();
-    action reopen();
-  };
-
+  entity Tasks             as projection on db.Tasks;
   entity TaskLists         as projection on db.TaskLists;
 
   @readonly
@@ -22,6 +17,6 @@ service TaskService {
     descr
   };
 
-  function getDefaultTaskList() returns TaskLists
+  function getDefaultTaskList() returns TaskLists;
 
 }

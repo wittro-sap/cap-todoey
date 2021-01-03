@@ -95,8 +95,6 @@ describe("Tasks:", () => {
         { ID: "89e257d8-f909-4d03-9a5f-21271e4a5027" },
       ]);
     });
-
-    it.skip("succeeds with ordering by date descending", async () => {});
   });
 
   describe("Creating tasks", () => {
@@ -178,25 +176,6 @@ describe("Tasks:", () => {
         dueTime: "21:00:00",
       });
       expect(status).to.equal(400);
-    });
-
-    it("succeeds with ignoring status when specified", async () => {
-      const { status, data } = await POST(`/task/Tasks`, {
-        title: "Testing",
-        taskList: { ID: "00000000-0000-0000-0000-000000000000" },
-        status: { code: "C" },
-        isCompleted: true,
-      });
-      expect(status).to.equal(201);
-      expect(data).to.deep.include({
-        title: "Testing",
-        taskList: { ID: "00000000-0000-0000-0000-000000000000" },
-        priority: null,
-        dueDate: null,
-        dueTime: null,
-        status: { code: "O" },
-        isCompleted: false,
-      });
     });
   });
 
@@ -285,7 +264,7 @@ describe("Tasks:", () => {
       expect(status).to.equal(400);
     });
 
-    it("succeeds with ignoring status when specified", async () => {
+    it("succeeds with status", async () => {
       const { status, data } = await PATCH(
         `/task/Tasks/89e257d8-f909-4d03-9a5f-21271e4a5027`,
         {
@@ -295,18 +274,9 @@ describe("Tasks:", () => {
       expect(status).to.equal(200);
       expect(data).to.deep.include({
         ID: "89e257d8-f909-4d03-9a5f-21271e4a5027",
-        status: { code: "O" },
+        status: { code: "X" },
+        isCompleted: true,
       });
-    });
-
-    it("fails updating completed task", async () => {
-      const { status } = await PATCH(
-        `/task/Tasks/e4e2ed88-1b80-44b6-ad79-12cf87295fb6`,
-        {
-          title: "Testing",
-        }
-      );
-      expect(status).to.equal(400);
     });
   });
 
@@ -319,13 +289,5 @@ describe("Tasks:", () => {
       const get = await GET`/task/Tasks/98e69d3b-0bca-4784-8bd8-b5230add74ec`;
       expect(get.status).to.equal(404);
     });
-  });
-
-  describe.skip("Setting task status", () => {
-    it("succeeds to done for open task", async () => {});
-
-    it("succeeds to cancelled for open task", async () => {});
-
-    it("succeeds to reopen for cancelled task", async () => {});
   });
 });
