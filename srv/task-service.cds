@@ -8,6 +8,20 @@ service TaskService {
   entity TaskLists         as projection on db.TaskLists;
 
   @readonly
+  entity TaskCollections   as
+    select from db.TaskCollections
+    mixin {
+      tasks : Association to many Tasks
+                on tasks.ID = ID
+    }
+    into {
+      ID,
+      title,
+      color,
+      tasks
+    };
+
+  @readonly
   entity TaskPriorityCodes as projection on db.TaskPriorityCodes excluding {
     descr
   };

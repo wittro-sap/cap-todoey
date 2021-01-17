@@ -1,8 +1,7 @@
 const cds = require("@sap/cds");
 
 module.exports = cds.service.impl(function () {
-  const { TaskLists, Tasks } = this.entities;
-  const op = this.operations();
+  const { TaskLists, Tasks, TaskCollections } = this.entities;
 
   const isDefaultTaskList = async (taskListID, req) => {
     const query = cds.ql.SELECT.one(TaskLists)
@@ -85,5 +84,13 @@ module.exports = cds.service.impl(function () {
 
   this.on("getDefaultTaskList", (_req) => {
     return cds.ql.SELECT.one(TaskLists).where({ isDefault: true });
+  });
+
+  this.on("READ", TaskCollections, async (req, next) => {
+    return next(req);
+  });
+
+  this.on("READ", Tasks, async (req, next) => {
+    return next(req);
   });
 });
