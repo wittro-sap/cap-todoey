@@ -1,7 +1,7 @@
 namespace db;
 
 using {cuid} from '@sap/cds/common';
-using {db.TaskLists} from './TaskList';
+using {db.TaskLists} from './TaskLists';
 using {db.TaskPriorityCode} from './TaskPriorityCodes';
 using {db.TaskStatusCode} from './TaskStatusCodes';
 

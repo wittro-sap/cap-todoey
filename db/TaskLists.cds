@@ -2,7 +2,7 @@ namespace db;
 
 using {cuid} from '@sap/cds/common';
 using {db.ColorHex} from './common';
-using {db.Tasks} from './Task';
+using {db.Tasks} from './Tasks';
 
 @title       : '{i18n>TaskLists}'
 @description : '{i18n>TaskListsDescr}'
