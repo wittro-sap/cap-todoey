@@ -25,4 +25,6 @@ entity Tasks : cuid {
   @title : '{i18n>TaskIsCompleted}'
   @readonly
   isCompleted : Boolean not null;
+  @title : '{i18n>TaskIsDueToday}'
+  isDueToday  : Boolean not null default false;
 }

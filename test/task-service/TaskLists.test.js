@@ -62,6 +62,7 @@ describe("TaskLists:", () => {
             dueTime: null,
             status: { code: "C" },
             isCompleted: true,
+            isDueToday: false,
           },
           {
             ID: "a74ddb9a-5bd6-481a-aba3-9737ec37ed99",
@@ -72,6 +73,7 @@ describe("TaskLists:", () => {
             dueTime: null,
             status: { code: "X" },
             isCompleted: true,
+            isDueToday: true,
           },
           {
             ID: "d3183e36-648f-433e-89d5-df89a9e37b54",
@@ -82,6 +84,7 @@ describe("TaskLists:", () => {
             dueTime: "09:30:00",
             status: { code: "O" },
             isCompleted: false,
+            isDueToday: false,
           },
         ],
       });

@@ -28,6 +28,7 @@ describe("Tasks:", () => {
         dueTime: "09:30:00",
         status: { code: "O" },
         isCompleted: false,
+        isDueToday: false,
       });
     });
 
@@ -113,6 +114,7 @@ describe("Tasks:", () => {
         dueTime: null,
         status: { code: "O" },
         isCompleted: false,
+        isDueToday: false,
       });
     });
 
@@ -146,6 +148,7 @@ describe("Tasks:", () => {
         dueTime: "21:00:00",
         status: { code: "O" },
         isCompleted: false,
+        isDueToday: false,
       });
     });
 
@@ -165,6 +168,7 @@ describe("Tasks:", () => {
         dueTime: null,
         status: { code: "O" },
         isCompleted: false,
+        isDueToday: false,
       });
     });
 
@@ -198,6 +202,7 @@ describe("Tasks:", () => {
         dueTime: "17:00:00",
         status: { code: "O" },
         isCompleted: false,
+        isDueToday: false,
       });
     });
 
