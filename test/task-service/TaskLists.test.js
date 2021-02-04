@@ -90,8 +90,7 @@ describe("TaskLists:", () => {
       });
     });
 
-    it.skip("succeeds finding the default task list", async () => {
-      // Fails at the moment, open CAP issue
+    it("succeeds finding the default task list", async () => {
       const { status, data } = await GET`/task/getDefaultTaskList()`;
       expect(status).to.equal(200);
       expect(data).to.deep.include({
