@@ -21,6 +21,10 @@ describe("Endpoint", () => {
         url: "Tasks",
       },
       {
+        name: "TaskCollections",
+        url: "TaskCollections",
+      },
+      {
         name: "TaskLists",
         url: "TaskLists",
       },
